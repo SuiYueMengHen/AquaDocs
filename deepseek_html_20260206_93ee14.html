@@ -1,0 +1,1642 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechDocs - 青绿色技术文档平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- MathJax 数学公式支持 -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- Highlight.js 代码高亮 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark-reasonable.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        :root {
+            --primary-color: #1abc9c;
+            --primary-dark: #16a085;
+            --primary-light: #a3e4d7;
+            --secondary-color: #2c3e50;
+            --light-bg: #f8f9fa;
+            --dark-bg: #34495e;
+            --text-color: #333;
+            --text-light: #7f8c8d;
+            --border-color: #e0e0e0;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+            --radius: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--light-bg);
+            transition: var(--transition);
+        }
+
+        .dark-mode {
+            --light-bg: #2c3e50;
+            --text-color: #ecf0f1;
+            --text-light: #bdc3c7;
+            --border-color: #4a6278;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            --secondary-color: #1abc9c;
+        }
+
+        /* 导航栏样式 */
+        header {
+            background-color: white;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        .dark-mode header {
+            background-color: var(--dark-bg);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .logo:hover {
+            transform: translateY(-2px);
+        }
+
+        .logo i {
+            font-size: 2.2rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-links a.active {
+            color: var(--primary-color);
+            background-color: rgba(26, 188, 156, 0.1);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 3px;
+            background-color: var(--primary-color);
+            border-radius: 3px;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after {
+            width: 80%;
+        }
+
+        .theme-toggle {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            box-shadow: 0 4px 8px rgba(26, 188, 156, 0.3);
+        }
+
+        .theme-toggle:hover {
+            background-color: var(--primary-dark);
+            transform: rotate(15deg);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            cursor: pointer;
+        }
+
+        /* 主内容区域 */
+        main {
+            min-height: calc(100vh - 160px);
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 5%;
+        }
+
+        /* 页面内容通用样式 */
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .page-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background-color: var(--primary-color);
+            border-radius: 2px;
+        }
+
+        /* 首页样式 */
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, rgba(26, 188, 156, 0.1) 0%, rgba(44, 62, 80, 0.1) 100%);
+            border-radius: var(--radius);
+            margin-bottom: 3rem;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin-bottom: 2rem;
+            color: var(--text-light);
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background-color: white;
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border-top: 4px solid var(--primary-color);
+        }
+
+        .dark-mode .feature-card {
+            background-color: var(--dark-bg);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        .feature-card i {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        /* 文档页样式 */
+        .doc-container {
+            display: flex;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .doc-sidebar {
+            flex: 0 0 250px;
+            background-color: white;
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+
+        .dark-mode .doc-sidebar {
+            background-color: var(--dark-bg);
+        }
+
+        .doc-content {
+            flex: 1;
+            background-color: white;
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .dark-mode .doc-content {
+            background-color: var(--dark-bg);
+        }
+
+        .doc-menu {
+            list-style: none;
+        }
+
+        .doc-menu li {
+            margin-bottom: 0.8rem;
+        }
+
+        .doc-menu a {
+            display: block;
+            padding: 0.7rem 1rem;
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: var(--radius);
+            transition: var(--transition);
+        }
+
+        .dark-mode .doc-menu a {
+            color: var(--text-color);
+        }
+
+        .doc-menu a:hover, .doc-menu a.active {
+            background-color: rgba(26, 188, 156, 0.1);
+            color: var(--primary-color);
+        }
+
+        /* Markdown内容样式 */
+        .markdown-content h1,
+        .markdown-content h2,
+        .markdown-content h3 {
+            color: var(--primary-color);
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .markdown-content p {
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+
+        .markdown-content pre {
+            background-color: #282c34;
+            color: #abb2bf;
+            padding: 1rem;
+            border-radius: var(--radius);
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+
+        .markdown-content code {
+            font-family: 'Courier New', monospace;
+            background-color: rgba(26, 188, 156, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        .markdown-content pre code {
+            background-color: transparent;
+            padding: 0;
+        }
+
+        .markdown-content blockquote {
+            border-left: 4px solid var(--primary-color);
+            padding-left: 1.5rem;
+            margin: 1.5rem 0;
+            color: var(--text-light);
+            font-style: italic;
+        }
+
+        .markdown-content ul, .markdown-content ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .markdown-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+
+        .markdown-content th, .markdown-content td {
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            text-align: left;
+        }
+
+        .markdown-content th {
+            background-color: rgba(26, 188, 156, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        /* 下载页样式 */
+        .download-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .download-card {
+            background-color: white;
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            text-align: center;
+            border: 2px solid transparent;
+        }
+
+        .dark-mode .download-card {
+            background-color: var(--dark-bg);
+        }
+
+        .download-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-color);
+            box-shadow: 0 8px 20px rgba(26, 188, 156, 0.15);
+        }
+
+        .download-card i {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .download-btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.8rem 1.8rem;
+            border-radius: var(--radius);
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            transition: var(--transition);
+            box-shadow: 0 4px 8px rgba(26, 188, 156, 0.3);
+        }
+
+        .download-btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(26, 188, 156, 0.4);
+        }
+
+        /* 帮助页样式 */
+        .faq-container {
+            margin-top: 2rem;
+        }
+
+        .faq-item {
+            background-color: white;
+            border-radius: var(--radius);
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .dark-mode .faq-item {
+            background-color: var(--dark-bg);
+        }
+
+        .faq-item:hover {
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .faq-question {
+            padding: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .faq-answer {
+            padding: 0 1.5rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .faq-item.active .faq-answer {
+            padding-bottom: 1.5rem;
+            max-height: 500px;
+        }
+
+        .faq-toggle {
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.active .faq-toggle {
+            transform: rotate(45deg);
+        }
+
+        /* 设置页样式 */
+        .settings-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .settings-card {
+            background-color: white;
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .dark-mode .settings-card {
+            background-color: var(--dark-bg);
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--primary-color);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(30px);
+        }
+
+        select {
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+            background-color: white;
+            color: var(--text-color);
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .dark-mode select {
+            background-color: var(--dark-bg);
+            border-color: var(--border-color);
+            color: var(--text-color);
+        }
+
+        select:focus {
+            border-color: var(--primary-color);
+        }
+
+        /* 页脚样式 */
+        footer {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 2rem 5%;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .dark-mode footer {
+            background-color: #1a252f;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .footer-links a {
+            color: var(--primary-light);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .copyright {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .doc-container {
+                flex-direction: column;
+            }
+            
+            .doc-sidebar {
+                position: static;
+                width: 100%;
+            }
+            
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background-color: white;
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+                border-radius: 0 0 var(--radius) var(--radius);
+            }
+            
+            .dark-mode .nav-links {
+                background-color: var(--dark-bg);
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .features, .download-cards, .settings-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header>
+        <nav>
+            <a href="#home" class="logo" data-page="home">
+                <i class="fas fa-book"></i>
+                <span>TechDocs</span>
+            </a>
+            
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home" class="active" data-page="home">首页</a></li>
+                <li><a href="#docs" data-page="docs">文档</a></li>
+                <li><a href="#download" data-page="download">下载</a></li>
+                <li><a href="#help" data-page="help">帮助</a></li>
+                <li><a href="#settings" data-page="settings">设置</a></li>
+            </ul>
+            
+            <button class="theme-toggle" id="themeToggle">
+                <i class="fas fa-moon"></i>
+            </button>
+        </nav>
+    </header>
+
+    <!-- 主内容区域 -->
+    <main>
+        <!-- 首页 -->
+        <section id="home" class="page active">
+            <div class="hero">
+                <h1>TechDocs 技术文档平台</h1>
+                <p>一个现代化的、功能完整的文档平台，支持Markdown、数学公式、代码高亮和丰富的交互体验。</p>
+                <a href="#docs" class="download-btn" data-page="docs">开始探索</a>
+            </div>
+            
+            <h2 class="page-title">核心功能</h2>
+            <div class="features">
+                <div class="feature-card">
+                    <i class="fas fa-file-alt"></i>
+                    <h3>Markdown支持</h3>
+                    <p>完整的Markdown语法支持，包括表格、列表、代码块、引用等元素的美化显示。</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-square-root-alt"></i>
+                    <h3>数学公式</h3>
+                    <p>集成MathJax引擎，完美支持LaTeX数学公式渲染，适合技术文档和学术内容。</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-code"></i>
+                    <h3>代码高亮</h3>
+                    <p>使用Highlight.js提供代码高亮，支持多种编程语言，提升代码可读性。</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-palette"></i>
+                    <h3>主题定制</h3>
+                    <p>提供明暗主题切换和多种颜色方案，满足不同用户的视觉偏好。</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-mobile-alt"></i>
+                    <h3>响应式设计</h3>
+                    <p>完美适配各种屏幕尺寸，从桌面到移动设备都能获得良好体验。</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-bolt"></i>
+                    <h3>动效丰富</h3>
+                    <p>精心设计的动画效果，使交互更加流畅自然，提升用户体验。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 文档页 -->
+        <section id="docs" class="page">
+            <h1 class="page-title">文档</h1>
+            <div class="doc-container">
+                <aside class="doc-sidebar">
+                    <h3>目录</h3>
+                    <ul class="doc-menu">
+                        <li><a href="#intro" class="active" data-doc="intro">介绍</a></li>
+                        <li><a href="#installation" data-doc="installation">安装指南</a></li>
+                        <li><a href="#usage" data-doc="usage">使用教程</a></li>
+                        <li><a href="#api" data-doc="api">API参考</a></li>
+                        <li><a href="#examples" data-doc="examples">示例代码</a></li>
+                        <li><a href="#math" data-doc="math">数学公式</a></li>
+                        <li><a href="#faq-doc" data-doc="faq-doc">常见问题</a></li>
+                    </ul>
+                </aside>
+                
+                <div class="doc-content">
+                    <div id="intro" class="markdown-content doc-section active">
+                        <h1>TechDocs 介绍</h1>
+                        <p>TechDocs 是一个现代化的技术文档平台，专为开发者和技术写作者设计。它提供了丰富的功能来创建、展示和分享技术文档。</p>
+                        
+                        <h2>主要特性</h2>
+                        <ul>
+                            <li>完整的Markdown支持</li>
+                            <li>LaTeX数学公式渲染</li>
+                            <li>代码语法高亮</li>
+                            <li>响应式设计</li>
+                            <li>明暗主题切换</li>
+                            <li>丰富的动画效果</li>
+                        </ul>
+                        
+                        <h2>快速开始</h2>
+                        <p>要开始使用TechDocs，只需按照以下步骤操作：</p>
+                        <ol>
+                            <li>下载最新版本的TechDocs</li>
+                            <li>阅读安装指南完成安装</li>
+                            <li>查看使用教程了解基本功能</li>
+                            <li>根据需要查阅API参考文档</li>
+                        </ol>
+                        
+                        <blockquote>
+                            <p>注意：TechDocs需要现代浏览器支持。建议使用Chrome 90+、Firefox 88+或Safari 14+版本。</p>
+                        </blockquote>
+                    </div>
+                    
+                    <div id="installation" class="markdown-content doc-section">
+                        <h1>安装指南</h1>
+                        <p>本章将指导您完成TechDocs的安装过程。</p>
+                        
+                        <h2>系统要求</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>组件</th>
+                                    <th>最低要求</th>
+                                    <th>推荐配置</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>操作系统</td>
+                                    <td>Windows 10 / macOS 10.14 / Ubuntu 18.04</td>
+                                    <td>Windows 11 / macOS 12 / Ubuntu 22.04</td>
+                                </tr>
+                                <tr>
+                                    <td>内存</td>
+                                    <td>2 GB</td>
+                                    <td>4 GB 或更高</td>
+                                </tr>
+                                <tr>
+                                    <td>存储空间</td>
+                                    <td>100 MB 可用空间</td>
+                                    <td>500 MB 可用空间</td>
+                                </tr>
+                                <tr>
+                                    <td>浏览器</td>
+                                    <td>Chrome 80+ / Firefox 75+ / Safari 13+</td>
+                                    <td>Chrome 90+ / Firefox 88+ / Safari 14+</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <h2>安装步骤</h2>
+                        <h3>Windows 安装</h3>
+                        <pre><code class="language-bash"># 下载安装包
+winget install TechDocs.Platform
+
+# 或者使用下载的安装程序
+TechDocs-Setup.exe /S</code></pre>
+                        
+                        <h3>macOS 安装</h3>
+                        <pre><code class="language-bash"># 使用Homebrew安装
+brew install techdocs
+
+# 或者下载DMG文件手动安装</code></pre>
+                        
+                        <h3>Linux 安装</h3>
+                        <pre><code class="language-bash"># Ubuntu/Debian
+sudo apt-get update
+sudo apt-get install techdocs
+
+# Fedora
+sudo dnf install techdocs
+
+# Arch Linux
+yay -S techdocs</code></pre>
+                    </div>
+                    
+                    <div id="usage" class="markdown-content doc-section">
+                        <h1>使用教程</h1>
+                        <p>本章将介绍TechDocs的基本使用方法。</p>
+                        
+                        <h2>创建新文档</h2>
+                        <p>要创建新文档，请按照以下步骤操作：</p>
+                        <pre><code class="language-javascript">// 示例：创建文档对象
+const doc = new TechDocs.Document({
+    title: "我的技术文档",
+    author: "开发者",
+    version: "1.0.0"
+});
+
+// 添加内容
+doc.addSection("介绍", "这是文档的介绍部分。");
+doc.addSection("安装", "安装指南内容...");
+
+// 保存文档
+doc.save();</code></pre>
+                        
+                        <h2>Markdown 语法</h2>
+                        <p>TechDocs 支持标准的Markdown语法：</p>
+                        <pre><code class="language-markdown"># 标题1
+## 标题2
+### 标题3
+
+**粗体文本** 和 *斜体文本*
+
+- 无序列表项1
+- 无序列表项2
+
+1. 有序列表项1
+2. 有序列表项2
+
+[链接文本](https://example.com)
+
+![图片描述](image.jpg)
+
+> 引用文本
+
+`行内代码`
+
+```javascript
+// 代码块
+function example() {
+    console.log("Hello, TechDocs!");
+}
+```</code></pre>
+                    </div>
+                    
+                    <div id="examples" class="markdown-content doc-section">
+                        <h1>示例代码</h1>
+                        <p>本章提供一些使用TechDocs API的示例代码。</p>
+                        
+                        <h2>Python 示例</h2>
+                        <pre><code class="language-python">import techdocs
+
+# 创建文档
+doc = techdocs.Document(title="Python示例文档")
+
+# 添加内容
+doc.add_heading("Python 示例", level=1)
+doc.add_paragraph("这是一个使用TechDocs的Python示例。")
+
+# 添加代码示例
+code = """
+def fibonacci(n):
+    if n <= 1:
+        return n
+    else:
+        return fibonacci(n-1) + fibonacci(n-2)
+"""
+
+doc.add_code(code, language="python")
+
+# 保存文档
+doc.save("example.html")</code></pre>
+                        
+                        <h2>JavaScript 示例</h2>
+                        <pre><code class="language-javascript">// 创建TechDocs实例
+const techDocs = new TechDocs({
+    theme: 'light',
+    enableMath: true,
+    codeHighlight: true
+});
+
+// 加载文档
+techDocs.loadDocument('document.md')
+    .then(document => {
+        // 渲染文档
+        techDocs.render(document, '#doc-container');
+        
+        // 添加事件监听
+        techDocs.on('section-click', (sectionId) => {
+            console.log(`Section clicked: ${sectionId}`);
+        });
+    })
+    .catch(error => {
+        console.error('Failed to load document:', error);
+    });</code></pre>
+                    </div>
+                    
+                    <div id="math" class="markdown-content doc-section">
+                        <h1>数学公式示例</h1>
+                        <p>TechDocs 使用MathJax渲染LaTeX数学公式。</p>
+                        
+                        <h2>基本公式</h2>
+                        <p>行内公式：\( E = mc^2 \)</p>
+                        <p>勾股定理：\( a^2 + b^2 = c^2 \)</p>
+                        
+                        <h2>块级公式</h2>
+                        <p>二次方程求根公式：</p>
+                        <p>\[ x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a} \]</p>
+                        
+                        <h2>积分与求和</h2>
+                        <p>积分公式：</p>
+                        <p>\[ \int_{a}^{b} f(x) \, dx = F(b) - F(a) \]</p>
+                        
+                        <p>求和公式：</p>
+                        <p>\[ \sum_{i=1}^{n} i = \frac{n(n+1)}{2} \]</p>
+                        
+                        <h2>矩阵</h2>
+                        <p>矩阵示例：</p>
+                        <p>\[
+                        A = \begin{bmatrix}
+                        1 & 2 & 3 \\
+                        4 & 5 & 6 \\
+                        7 & 8 & 9
+                        \end{bmatrix}
+                        \]</p>
+                        
+                        <h2>复杂公式</h2>
+                        <p>欧拉公式：</p>
+                        <p>\[ e^{i\pi} + 1 = 0 \]</p>
+                        
+                        <p>正态分布：</p>
+                        <p>\[
+                        f(x) = \frac{1}{\sigma\sqrt{2\pi}} e^{-\frac{1}{2}\left(\frac{x-\mu}{\sigma}\right)^2}
+                        \]</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 下载页 -->
+        <section id="download" class="page">
+            <h1 class="page-title">下载</h1>
+            <p>选择适合您操作系统的版本进行下载。</p>
+            
+            <div class="download-cards">
+                <div class="download-card">
+                    <i class="fab fa-windows"></i>
+                    <h3>Windows 版本</h3>
+                    <p>适用于 Windows 10 及以上版本</p>
+                    <p><strong>版本:</strong> 2.1.0</p>
+                    <p><strong>文件大小:</strong> 85.4 MB</p>
+                    <a href="#" class="download-btn">下载 .exe</a>
+                </div>
+                
+                <div class="download-card">
+                    <i class="fab fa-apple"></i>
+                    <h3>macOS 版本</h3>
+                    <p>适用于 macOS 10.14 及以上版本</p>
+                    <p><strong>版本:</strong> 2.1.0</p>
+                    <p><strong>文件大小:</strong> 92.7 MB</p>
+                    <a href="#" class="download-btn">下载 .dmg</a>
+                </div>
+                
+                <div class="download-card">
+                    <i class="fab fa-linux"></i>
+                    <h3>Linux 版本</h3>
+                    <p>适用于 Ubuntu 18.04 及以上版本</p>
+                    <p><strong>版本:</strong> 2.1.0</p>
+                    <p><strong>文件大小:</strong> 78.2 MB</p>
+                    <a href="#" class="download-btn">下载 .deb</a>
+                </div>
+                
+                <div class="download-card">
+                    <i class="fas fa-code"></i>
+                    <h3>源代码</h3>
+                    <p>从GitHub获取完整源代码</p>
+                    <p><strong>版本:</strong> 2.1.0</p>
+                    <p><strong>许可证:</strong> MIT</p>
+                    <a href="#" class="download-btn">GitHub仓库</a>
+                </div>
+            </div>
+            
+            <div style="margin-top: 3rem; background-color: rgba(26, 188, 156, 0.1); padding: 1.5rem; border-radius: var(--radius);">
+                <h3>安装说明</h3>
+                <p>下载完成后，请按照以下步骤进行安装：</p>
+                <ol>
+                    <li>运行下载的安装程序</li>
+                    <li>按照安装向导的提示完成安装</li>
+                    <li>启动TechDocs应用程序</li>
+                    <li>如果需要，查看<a href="#docs" data-page="docs">文档</a>获取详细使用指南</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- 帮助页 -->
+        <section id="help" class="page">
+            <h1 class="page-title">帮助中心</h1>
+            <p>常见问题和使用帮助</p>
+            
+            <div class="faq-container">
+                <div class="faq-item active">
+                    <div class="faq-question">
+                        <span>如何开始使用TechDocs？</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>首先，从下载页面获取适合您操作系统的版本。安装完成后，您可以查看文档页面的"快速开始"部分，或者直接创建新文档开始使用。</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>TechDocs支持哪些Markdown扩展？</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>TechDocs支持标准Markdown以及以下扩展：表格、任务列表、定义列表、脚注、缩写等。此外，我们还支持LaTeX数学公式和Mermaid图表。</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>如何切换明暗主题？</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>您可以通过以下两种方式切换主题：</p>
+                        <ol>
+                            <li>点击页面右上角的主题切换按钮</li>
+                            <li>在设置页面选择喜欢的主题</li>
+                        </ol>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>TechDocs支持导出哪些格式？</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>目前TechDocs支持导出为以下格式：HTML、PDF、Markdown和纯文本。我们计划在未来版本中添加对Word和Epub格式的支持。</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>如何报告问题或请求功能？</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>如果您遇到问题或有功能建议，可以通过以下方式联系我们：</p>
+                        <ul>
+                            <li>在GitHub仓库提交Issue</li>
+                            <li>发送邮件至 support@techdocs.dev</li>
+                            <li>加入我们的Discord社区</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>TechDocs是免费的吗？</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>是的，TechDocs是完全免费和开源的，遵循MIT许可证。您可以自由使用、修改和分发它。</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 3rem;">
+                <h3>需要更多帮助？</h3>
+                <p>如果常见问题中没有解决您的问题，请尝试以下资源：</p>
+                <div style="display: flex; gap: 1rem; margin-top: 1rem; flex-wrap: wrap;">
+                    <a href="#docs" class="download-btn" data-page="docs">查看完整文档</a>
+                    <a href="#" class="download-btn" style="background-color: var(--secondary-color);">联系技术支持</a>
+                    <a href="#" class="download-btn" style="background-color: #6c5ce7;">加入社区</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 设置页 -->
+        <section id="settings" class="page">
+            <h1 class="page-title">设置</h1>
+            <p>自定义您的TechDocs体验</p>
+            
+            <div class="settings-container">
+                <div class="settings-card">
+                    <h3>外观设置</h3>
+                    <div class="setting-item">
+                        <div>
+                            <strong>主题模式</strong>
+                            <p>切换明暗主题</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="themeSwitch">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div>
+                            <strong>主色调</strong>
+                            <p>选择界面主色调</p>
+                        </div>
+                        <select id="colorScheme">
+                            <option value="green" selected>青绿色</option>
+                            <option value="blue">蓝色</option>
+                            <option value="purple">紫色</option>
+                            <option value="orange">橙色</option>
+                        </select>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div>
+                            <strong>动画效果</strong>
+                            <p>启用/禁用页面动画</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="animationToggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="settings-card">
+                    <h3>文档设置</h3>
+                    <div class="setting-item">
+                        <div>
+                            <strong>代码高亮</strong>
+                            <p>启用/禁用代码语法高亮</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="codeHighlightToggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div>
+                            <strong>数学公式</strong>
+                            <p>启用/禁用数学公式渲染</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="mathToggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div>
+                            <strong>自动保存</strong>
+                            <p>启用/禁用文档自动保存</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="autosaveToggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="settings-card">
+                    <h3>其他设置</h3>
+                    <div class="setting-item">
+                        <div>
+                            <strong>字体大小</strong>
+                            <p>调整文档字体大小</p>
+                        </div>
+                        <select id="fontSize">
+                            <option value="small">小</option>
+                            <option value="medium" selected>中</option>
+                            <option value="large">大</option>
+                            <option value="xlarge">特大</option>
+                        </select>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div>
+                            <strong>页面宽度</strong>
+                            <p>设置文档页面宽度</p>
+                        </div>
+                        <select id="pageWidth">
+                            <option value="compact">紧凑</option>
+                            <option value="medium" selected>适中</option>
+                            <option value="wide">宽屏</option>
+                            <option value="full">全宽</option>
+                        </select>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div>
+                            <strong>语言</strong>
+                            <p>选择界面语言</p>
+                        </div>
+                        <select id="language">
+                            <option value="zh" selected>中文</option>
+                            <option value="en">English</option>
+                            <option value="ja">日本語</option>
+                            <option value="ko">한국어</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 2rem; text-align: center;">
+                <button id="resetSettings" class="download-btn" style="background-color: #e74c3c;">恢复默认设置</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="footer-content">
+            <div style="font-size: 2rem; color: var(--primary-color);">
+                <i class="fas fa-book"></i>
+            </div>
+            
+            <p>TechDocs - 现代化技术文档平台</p>
+            
+            <ul class="footer-links">
+                <li><a href="#home" data-page="home">首页</a></li>
+                <li><a href="#docs" data-page="docs">文档</a></li>
+                <li><a href="#download" data-page="download">下载</a></li>
+                <li><a href="#help" data-page="help">帮助</a></li>
+                <li><a href="#settings" data-page="settings">设置</a></li>
+            </ul>
+            
+            <div class="copyright">
+                <p>&copy; 2023 TechDocs 项目. 基于 MIT 许可证发布.</p>
+                <p>本页面为演示用途，所有功能均为前端实现。</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 页面切换功能
+        document.addEventListener('DOMContentLoaded', function() {
+            // 页面切换
+            const pages = document.querySelectorAll('.page');
+            const navLinks = document.querySelectorAll('.nav-links a, .footer-links a, .logo');
+            const docSections = document.querySelectorAll('.doc-section');
+            const docMenuLinks = document.querySelectorAll('.doc-menu a');
+            
+            // 显示指定页面
+            function showPage(pageId) {
+                // 隐藏所有页面
+                pages.forEach(page => {
+                    page.classList.remove('active');
+                });
+                
+                // 显示目标页面
+                const targetPage = document.getElementById(pageId);
+                if (targetPage) {
+                    targetPage.classList.add('active');
+                    
+                    // 更新导航链接状态
+                    navLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('data-page') === pageId) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            }
+            
+            // 导航链接点击事件
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const pageId = this.getAttribute('data-page');
+                    if (pageId) {
+                        showPage(pageId);
+                        
+                        // 移动端菜单关闭
+                        if (window.innerWidth <= 768) {
+                            navLinksContainer.classList.remove('active');
+                        }
+                    }
+                });
+            });
+            
+            // 文档菜单点击事件
+            docMenuLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const docId = this.getAttribute('data-doc');
+                    
+                    // 更新菜单状态
+                    docMenuLinks.forEach(item => {
+                        item.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    
+                    // 显示对应文档部分
+                    docSections.forEach(section => {
+                        section.classList.remove('active');
+                    });
+                    
+                    const targetDoc = document.getElementById(docId);
+                    if (targetDoc) {
+                        targetDoc.classList.add('active');
+                    }
+                });
+            });
+            
+            // 主题切换
+            const themeToggle = document.getElementById('themeToggle');
+            const themeSwitch = document.getElementById('themeSwitch');
+            
+            function toggleTheme() {
+                document.body.classList.toggle('dark-mode');
+                const isDarkMode = document.body.classList.contains('dark-mode');
+                
+                // 更新按钮图标
+                const icon = themeToggle.querySelector('i');
+                icon.className = isDarkMode ? 'fas fa-sun' : 'fas fa-moon';
+                
+                // 保存主题偏好
+                localStorage.setItem('techdocs-theme', isDarkMode ? 'dark' : 'light');
+            }
+            
+            themeToggle.addEventListener('click', toggleTheme);
+            themeSwitch.addEventListener('change', toggleTheme);
+            
+            // 加载保存的主题
+            const savedTheme = localStorage.getItem('techdocs-theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+                themeSwitch.checked = true;
+                const icon = themeToggle.querySelector('i');
+                icon.className = 'fas fa-sun';
+            }
+            
+            // 移动端菜单
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const navLinksContainer = document.getElementById('navLinks');
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                navLinksContainer.classList.toggle('active');
+                
+                // 更新菜单图标
+                const icon = mobileMenuBtn.querySelector('i');
+                icon.className = navLinksContainer.classList.contains('active') ? 'fas fa-times' : 'fas fa-bars';
+            });
+            
+            // FAQ展开/折叠
+            const faqQuestions = document.querySelectorAll('.faq-question');
+            faqQuestions.forEach(question => {
+                question.addEventListener('click', function() {
+                    const faqItem = this.parentElement;
+                    const isActive = faqItem.classList.contains('active');
+                    
+                    // 关闭所有FAQ项
+                    document.querySelectorAll('.faq-item').forEach(item => {
+                        item.classList.remove('active');
+                    });
+                    
+                    // 如果当前项未激活，则激活它
+                    if (!isActive) {
+                        faqItem.classList.add('active');
+                    }
+                });
+            });
+            
+            // 设置页功能
+            const colorScheme = document.getElementById('colorScheme');
+            const animationToggle = document.getElementById('animationToggle');
+            const codeHighlightToggle = document.getElementById('codeHighlightToggle');
+            const mathToggle = document.getElementById('mathToggle');
+            const fontSize = document.getElementById('fontSize');
+            const resetSettings = document.getElementById('resetSettings');
+            
+            // 颜色方案切换
+            colorScheme.addEventListener('change', function() {
+                const color = this.value;
+                const root = document.documentElement;
+                
+                // 移除所有颜色类
+                root.classList.remove('color-green', 'color-blue', 'color-purple', 'color-orange');
+                
+                // 添加新颜色类
+                root.classList.add(`color-${color}`);
+                
+                // 保存设置
+                localStorage.setItem('techdocs-color', color);
+            });
+            
+            // 加载保存的颜色方案
+            const savedColor = localStorage.getItem('techdocs-color') || 'green';
+            colorScheme.value = savedColor;
+            
+            // 动画设置
+            animationToggle.addEventListener('change', function() {
+                const enableAnimations = this.checked;
+                document.body.style.setProperty('--transition', enableAnimations ? 'all 0.3s ease' : 'none');
+                
+                // 保存设置
+                localStorage.setItem('techdocs-animations', enableAnimations);
+            });
+            
+            // 加载动画设置
+            const savedAnimations = localStorage.getItem('techdocs-animations');
+            if (savedAnimations !== null) {
+                animationToggle.checked = savedAnimations === 'true';
+                document.body.style.setProperty('--transition', animationToggle.checked ? 'all 0.3s ease' : 'none');
+            }
+            
+            // 代码高亮设置
+            codeHighlightToggle.addEventListener('change', function() {
+                const enableHighlight = this.checked;
+                if (enableHighlight) {
+                    // 重新启用代码高亮
+                    document.querySelectorAll('pre code').forEach((block) => {
+                        hljs.highlightElement(block);
+                    });
+                } else {
+                    // 移除高亮
+                    document.querySelectorAll('.hljs').forEach((block) => {
+                        block.classList.remove('hljs');
+                    });
+                }
+                
+                // 保存设置
+                localStorage.setItem('techdocs-highlight', enableHighlight);
+            });
+            
+            // 加载代码高亮设置
+            const savedHighlight = localStorage.getItem('techdocs-highlight');
+            if (savedHighlight !== null) {
+                codeHighlightToggle.checked = savedHighlight === 'true';
+                if (!codeHighlightToggle.checked) {
+                    document.querySelectorAll('.hljs').forEach((block) => {
+                        block.classList.remove('hljs');
+                    });
+                }
+            }
+            
+            // 数学公式设置
+            mathToggle.addEventListener('change', function() {
+                const enableMath = this.checked;
+                if (enableMath) {
+                    // 重新渲染数学公式
+                    if (window.MathJax) {
+                        MathJax.typesetPromise();
+                    }
+                } else {
+                    // 隐藏所有数学公式
+                    document.querySelectorAll('.MathJax').forEach(element => {
+                        element.style.display = 'none';
+                    });
+                }
+                
+                // 保存设置
+                localStorage.setItem('techdocs-math', enableMath);
+            });
+            
+            // 加载数学公式设置
+            const savedMath = localStorage.getItem('techdocs-math');
+            if (savedMath !== null) {
+                mathToggle.checked = savedMath === 'true';
+                if (!mathToggle.checked) {
+                    document.querySelectorAll('.MathJax').forEach(element => {
+                        element.style.display = 'none';
+                    });
+                }
+            }
+            
+            // 字体大小设置
+            fontSize.addEventListener('change', function() {
+                const size = this.value;
+                const sizes = {
+                    'small': '14px',
+                    'medium': '16px',
+                    'large': '18px',
+                    'xlarge': '20px'
+                };
+                
+                document.body.style.fontSize = sizes[size];
+                
+                // 保存设置
+                localStorage.setItem('techdocs-fontsize', size);
+            });
+            
+            // 加载字体大小设置
+            const savedFontSize = localStorage.getItem('techdocs-fontsize') || 'medium';
+            fontSize.value = savedFontSize;
+            const sizes = {
+                'small': '14px',
+                'medium': '16px',
+                'large': '18px',
+                'xlarge': '20px'
+            };
+            document.body.style.fontSize = sizes[savedFontSize];
+            
+            // 重置设置
+            resetSettings.addEventListener('click', function() {
+                // 重置所有设置
+                localStorage.clear();
+                
+                // 重置UI
+                document.body.classList.remove('dark-mode');
+                themeSwitch.checked = false;
+                colorScheme.value = 'green';
+                animationToggle.checked = true;
+                codeHighlightToggle.checked = true;
+                mathToggle.checked = true;
+                fontSize.value = 'medium';
+                
+                // 重置样式
+                document.body.style.fontSize = '16px';
+                document.body.style.setProperty('--transition', 'all 0.3s ease');
+                
+                // 重新启用代码高亮
+                document.querySelectorAll('pre code').forEach((block) => {
+                    hljs.highlightElement(block);
+                });
+                
+                // 重新启用数学公式
+                if (window.MathJax) {
+                    MathJax.typesetPromise();
+                }
+                
+                // 更新主题按钮图标
+                const icon = themeToggle.querySelector('i');
+                icon.className = 'fas fa-moon';
+                
+                alert('设置已重置为默认值！');
+            });
+            
+            // 初始化页面 - 显示首页
+            const hash = window.location.hash.substring(1);
+            const initialPage = hash || 'home';
+            showPage(initialPage);
+            
+            // 初始化文档部分
+            if (initialPage === 'docs') {
+                const firstDocLink = document.querySelector('.doc-menu a');
+                if (firstDocLink) {
+                    const firstDocId = firstDocLink.getAttribute('data-doc');
+                    const firstDoc = document.getElementById(firstDocId);
+                    if (firstDoc) {
+                        document.querySelectorAll('.doc-section').forEach(section => {
+                            section.classList.remove('active');
+                        });
+                        firstDoc.classList.add('active');
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
